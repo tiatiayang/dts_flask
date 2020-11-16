@@ -35,10 +35,9 @@ class Role(db.Model):
     @staticmethod
     def init_role():
         roles_permissions_map = {
-            'Locked': ['FOLLOW', 'COLLECT'],
-            'User': ['FOLLOW', 'COLLECT', 'COMMENT', 'UPLOAD'],
-            'Moderator': ['FOLLOW', 'COLLECT', 'COMMENT', 'UPLOAD', 'MODERATE'],
-            'Administrator': ['FOLLOW', 'COLLECT', 'COMMENT', 'UPLOAD', 'MODERATE', 'ADMINISTER']
+            'User': ['TEST'],
+            'Moderator': ['TEST', 'MODERATE'],
+            'Administrator': ['TEST', 'MODERATE', 'ADMINISTER']
         }
 
         for role_name in roles_permissions_map:
@@ -99,6 +98,8 @@ class User(db.Model, UserMixin):
     receive_collect_notification = db.Column(db.Boolean, default=True)
 
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+
+    role = db.relationship('Role', back_populates='users')
 
 
     def __init__(self, **kwargs):
